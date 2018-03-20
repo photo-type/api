@@ -9,7 +9,7 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/lab/bin/lab -v",
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "start:lint": "npm-run-all --parallel lint start:watch",
     "start:watch": "nodemon server.js",
     "lint": "eslint . --ext .js"
@@ -42,8 +42,9 @@
     "hapi": "^16.0.1",
     "hapi-auth-jwt2": "^7.2.4",
     "hapi-i18n": "^1.0.5",
+    "i18n": "^0.8.3",
     "inert": "^4.1.0",
-    "joi": "^10.2.2",
+    "joi": "^10.6.0",
     "jsonwebtoken": "^7.4.2",
     "mongoose": "^4.11.6",
     "node-uuid": "^1.4.8",
@@ -59,7 +60,7 @@
     "eslint-plugin-import": "^2.2.0",
     "hapi-swagger": "^7.7.1",
     "lab": "^11.2.1",
-    "nodemon": "^1.11.0",
+    "nodemon": "^1.17.2",
     "npm-run-all": "^3.1.2"
   },
   "eslintConfig": {

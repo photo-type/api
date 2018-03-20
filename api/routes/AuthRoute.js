@@ -14,7 +14,7 @@ module.exports = function (server, options, next) {
         validate: {
           payload: {
             name: Joi.string().required(),
-            email: Joi.email().required(),
+            email: Joi.string().email().required(),
             password: Joi.string().required()
           }
         },
@@ -40,22 +40,22 @@ module.exports = function (server, options, next) {
         notes: 'Signs in customers'
       }
     },
-    {
-      method: 'PUT',
-      path: '/auth/reset_password',
-      config: {
-        handler: AuthController.resetPassword,
-        validate: {
-          payload: {
-            code: Joi.string().required(),
-            phone_number: Joi.string().required(),
-            password: Joi.string().required()
-          }
-        },
-        tags: ['api', 'auth'],
-        description: 'Reset user password if code provided is valid',
-        notes: 'Reset user password if code provided is valid'
-      }
-    }
+    // {
+    //   method: 'PUT',
+    //   path: '/auth/reset_password',
+    //   config: {
+    //     handler: AuthController.resetPassword,
+    //     validate: {
+    //       payload: {
+    //         code: Joi.string().required(),
+    //         phone_number: Joi.string().required(),
+    //         password: Joi.string().required()
+    //       }
+    //     },
+    //     tags: ['api', 'auth'],
+    //     description: 'Reset user password if code provided is valid',
+    //     notes: 'Reset user password if code provided is valid'
+    //   }
+    // }
   ]);
 };

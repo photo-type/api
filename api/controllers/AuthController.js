@@ -4,6 +4,7 @@ const JWT = require('jsonwebtoken');
 const jwtConfig = require('../../config/jwt.js');
 const Boom = require('boom');
 var bcrypt = require('bcrypt');
+const  i18n = require("i18n");
 const controller = {};
 
 controller.signup = function (request, reply) {
@@ -35,24 +36,23 @@ controller.signup = function (request, reply) {
 
 
 controller.login = function (request, reply) {
-  const phone = request.payload.phone_number;
+  const email = request.payload.email;
   const password = request.payload.password;
   const type = request.payload.type;
   Users
-    .findOne({phone, type: 'CUSTOMER'})
-    .populate(type.toLowerCase())
+    .findOne({email:email})
     .exec()
     .then((User) => {
       if (!User) {
-        return reply({error: true, message: request.i18n.__('200_PASSWORD')});
+        return reply({error: true, message: 'sum ting wong, No Oser fond'});
       }
       if (User.status === 'SUSPENDED') {
-        return reply({error: true, message: request.i18n.__('200_SUSPENDED')});
+        return reply({error: true, message: 'yu suspindad'});
       }
 
       User.comparePassword(password).then((match) => {
         if (!match) {
-          return reply({error: true, message: request.i18n.__('200_PASSWORD')});
+          return reply({error: true, message: 'thou shall not pass, incorrect password'});
         }
         let token = JWT.sign({
           id: User._id,
@@ -66,14 +66,11 @@ controller.login = function (request, reply) {
 
         delete user.password;
         return reply({jwt: token, data: {
-          [type.toLowerCase()]: User[type.toLowerCase()],
-          role: User.type,
-          phone: User.phone,
-          phone_verified: User.phone_verified
+          success:true
         }});
       })
       .catch((err) => {
-        return reply(Boom.internal(request.i18n.__('500_MONGO_READ')));
+        return reply(Boom.internal(err));
       });
     });
 };
