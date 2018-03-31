@@ -14,7 +14,7 @@ controller.signup = function (request, reply) {
 
   Users.findOne({email: email}).then((User) => {
     if (User) {
-      return reply({error: true, message: 'User exist'});
+      return reply({error: true, message: 'User already exists'});
     }
     const user = new Users({
       email: email,
@@ -34,7 +34,6 @@ controller.signup = function (request, reply) {
   });
 };
 
-
 controller.login = function (request, reply) {
   const email = request.payload.email;
   const password = request.payload.password;
@@ -44,15 +43,15 @@ controller.login = function (request, reply) {
     .exec()
     .then((User) => {
       if (!User) {
-        return reply({error: true, message: 'sum ting wong, No Oser fond'});
+        return reply({error: true, message: 'no user found'});
       }
       if (User.status === 'SUSPENDED') {
-        return reply({error: true, message: 'yu suspindad'});
+        return reply({error: true, message: 'your account is suspended, contact the administrator'});
       }
 
       User.comparePassword(password).then((match) => {
         if (!match) {
-          return reply({error: true, message: 'thou shall not pass, incorrect password'});
+          return reply({error: true, message: 'incorrect password'});
         }
         let token = JWT.sign({
           id: User._id,
