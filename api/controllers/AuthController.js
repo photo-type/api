@@ -4,7 +4,6 @@ const JWT = require('jsonwebtoken');
 const jwtConfig = require('../../config/jwt.js');
 const Boom = require('boom');
 var bcrypt = require('bcrypt');
-const  i18n = require("i18n");
 const controller = {};
 
 controller.signup = function (request, reply) {

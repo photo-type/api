@@ -10,7 +10,7 @@ Service.upload = (file,key,size, cb) => {
   s3bucket.putObject({
     ACL: 'public-read',
     Body: body,
-    Key: key,
+    Key: configS3.secretAccessKey,
     Bucket: configS3.bucket,
   }, (err, data) => {
     cb(err, data);
@@ -20,7 +20,7 @@ Service.upload = (file,key,size, cb) => {
 Service.delete = (key) => {
   const promise = new Promise((resolve, reject) => {
     s3bucket.deleteObject({
-      Key: key,
+      Key: configS3.secretAccessKey,
       Bucket: configS3.bucket
     }, (err, data) => {
       console.log(err, data);
