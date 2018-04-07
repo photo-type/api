@@ -5,8 +5,23 @@ let FS = require('fs');
 let path = require('path');
 let uid = require('uniqid');
 const imageController = {};
+
+
 // let lensService = require('../services/lens');
 let s3 = new aws.S3();
+
+// TODO
+// 1. refractor to use s3service
+// 2. figure out a way to upload temp images and delete with upload
+// 2.a if there is one upload going on, the second upload might replce the image
+// 2.b its not possible to create a  new temp file for every user
+// 3. logic:
+//    upload img to temp
+//    if another upload occrs
+//    check if there are files in the temp dir
+//    if so add a prefix or post fix of 2,3 int
+//    when a file is upload successfully to s3 
+//    delete it 
 let tempdir = path.join(__dirname, 'tempUpload');
 console.log(__dirname, tempdir)
 if (!FS.existsSync(tempdir))
