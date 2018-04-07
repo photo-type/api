@@ -28,7 +28,7 @@
   "dependencies": {
     "async": "^2.1.5",
     "asyncawait": "^1.0.6",
-    "aws-sdk": "^2.218.1",
+    "aws-sdk": "^2.222.1",
     "bcrypt": "^1.0.2",
     "bell": "^8.7.0",
     "blipp": "^2.3.0",
@@ -52,6 +52,7 @@
     "stripe": "^4.15.0",
     "twilio": "^3.6.1",
     "underscore": "^1.8.3",
+    "uniqid": "^4.1.1",
     "vision": "^4.1.1"
   },
   "devDependencies": {
