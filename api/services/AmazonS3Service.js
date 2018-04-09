@@ -10,7 +10,7 @@ Service.upload = (file,key,size, cb) => {
   s3bucket.putObject({
     ACL: 'public-read',
     Body: body,
-    Key: 'keyFoo',
+    Key: key,
     Bucket: process.env.PHOTOTYPE_AWS_S3_BUCKET
   }, (err, data) => {
 
