@@ -5,15 +5,15 @@ module.exports = (server, options, next) => {
   server.route([
     {
       method: "post",
-      path: "/upload",
+      path: "/prototype",
       config: {
-        payload:{
+        payload: {
           output: 'file',
           parse: true,
           allow: 'multipart/form-data',
           maxBytes: 5000 * 5000 * 10,
         },
-     
+
         auth: false,
         handler: imageController.upload
       }
