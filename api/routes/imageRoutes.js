@@ -5,7 +5,7 @@ module.exports = (server, options, next) => {
   server.route([
     {
       method: "post",
-      path: "/prototype",
+      path: "/prototype/{id}/screens",
       config: {
         payload: {
           output: 'file',
@@ -13,7 +13,6 @@ module.exports = (server, options, next) => {
           allow: 'multipart/form-data',
           maxBytes: 5000 * 5000 * 10,
         },
-
         auth: false,
         handler: imageController.upload
       }
