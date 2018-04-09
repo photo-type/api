@@ -1,14 +1,14 @@
-let aws = require('aws-sdk');
-let s3sevice = require('../services/AmazonS3Service');
+
 let Boom = require('boom');
 let FS = require('fs');
 let path = require('path');
 let uid = require('uniqid');
+let s3service = require('../services/AmazonS3Service');
+
 const imageController = {};
 
 
 // let lensService = require('../services/lens');
-let s3 = new aws.S3();
 
 // TODO
 // 1. refractor to use s3service
@@ -22,48 +22,49 @@ let s3 = new aws.S3();
 //    if so add a prefix or post fix of 2,3 int
 //    when a file is upload successfully to s3 
 //    delete it 
-let tempdir = path.join(__dirname, 'tempUpload');
-console.log(__dirname, tempdir)
-if (!FS.existsSync(tempdir))
-  FS.mkdirSync(tempdir)
-
 imageController.upload = (req, reply) => {
   let promise = new Promise((resolve, reject) => {
     let username = req.payload.username;
     let project = req.payload.project;
-    let file = FS.createWriteStream(tempdir + '/' + username + ".png")
-    req.payload.file.pipe(file)
-
-    // let body = FS.createReadStream(file)
-    // FS.readFile(file, function(err,body){
-    FS.readFile(tempdir + "/" + username + ".png", function (err, body) {
-      console.log(err);
-      console.log("qux");
-      let image = new Buffer(body, 'binary')
-
-      s3.putObject({
-        Bucket: process.env.PHOTOTYPE_AWS_S3_BUCKET,
-        Key: username + '.' + project,
-        Body: image,
-        ACL: 'public-read'
-      }).promise().then((data) => {
-        console.log(err, "error");
-        console.log(data);
-        if (err) {
-          err.success = false
-          return resolve(err)
+    const image = req.payload.file;
+    const key = 'phototype/prototypes'+ uid() +'.png';
+    s3service.upload(
+      image.path,
+      key,
+      image.bytes,
+      (err,data)=>{
+        if(err){
+          err.success=false;
+          resolve(err)
         }
-        resolve(data);
+        else{
+          data.success=true
+          resolve(data)
+        }
+      }
+    )
+    // let file = FS.createWriteStream(tempdir + '/' + username + ".png")
+    // req.payload.file.pipe(file)
+
+    // let body = FS.createReadStream(req.payload.file.path)
+    //   console.log("qux");
+    //   s3.putObject({
+    //     Bucket: process.env.PHOTOTYPE_AWS_S3_BUCKET,
+    //     Key: username + '.' + project,
+    //     Body: body,
+    //     ACL: 'public-read'
+    //   }).promise().then((data) => {
+    //     console.log(data);
+    //     resolve(data);
 
 
-        // lenService.create(data.url).then((err,res)=>{
+    //     // lenService.create(data.url).then((err,res)=>{
 
-        //     resolve(res || err);
-        // })
+    //     //     resolve(res || err);
+    //     // })
 
-      })
+    //   })
     })
-  })
   // })
   return reply(promise);
 }

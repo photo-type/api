@@ -8,11 +8,12 @@ module.exports = (server, options, next) => {
       path: "/upload",
       config: {
         payload:{
-          output: 'stream',
+          output: 'file',
           parse: true,
           allow: 'multipart/form-data',
-          maxBytes: 5000 * 5000 * 10
+          maxBytes: 5000 * 5000 * 10,
         },
+     
         auth: false,
         handler: imageController.upload
       }
