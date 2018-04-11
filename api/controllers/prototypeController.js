@@ -15,8 +15,28 @@ prototypeController.createPrototype = function (req, res) {
   protoype.save().then(() => {
     return res({ success: true, prototypeId: protoype._id, message: "successfully created" })
   }).catch((err) => {
-    console.log('logging error',err);
+    console.log('logging error', err);
     return res(Boom.internal("Error creating new protoype"))
+  })
+}
+
+prototypeController.getPrototypes = function (req, res) {
+  let query = {
+    user: req.payload.user_id
+  }
+  // if ther is an id in the request params then query for only
+  // the specific prorotype
+  // otherwise get all of the user's prototypes
+  if (req.params.id) {
+    query._id = req.params.id
+  }
+  Prototype.find({
+    query
+  }).then(prototypes => {
+    return res(prototypes)
+  }).catch((err) => {
+    console.log("err getProrotypes", err)
+    return res(Boom.internal("Error finding prototypes"))
   })
 }
 

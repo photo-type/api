@@ -16,6 +16,14 @@ module.exports = (server, options, next) => {
         auth: 'jwt',
         handler: prototypeController.createPrototype
       }
+    },
+    {
+      method:"post",
+      path:"/prototypes/{id}",
+      config:{
+        handler: prototypeController.getPrototypes,
+        auth: 'jwt'
+      }
     }
   ])
 }
