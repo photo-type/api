@@ -18,8 +18,6 @@ prototypeController.createPrototype = function (req, res) {
     console.log('logging error',err);
     return res(Boom.internal("Error creating new protoype"))
   })
-
-
 }
 
 
