@@ -15,6 +15,7 @@ prototypeController.createPrototype = function (req, res) {
   protoype.save().then(() => {
     return res({ success: true, prototypeId: protoype._id, message: "successfully created" })
   }).catch((err) => {
+    console.log('logging error',err);
     return res(Boom.internal("Error creating new protoype"))
   })
 

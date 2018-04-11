@@ -4,7 +4,7 @@ const Schema = require('mongoose').Schema;
 const ScreensModel = mongoose.Schema(
   {
 
-    _id: { type: Schema._id, unique: true },
+    _id: { type: Schema.Types.ObjectId, auto:true },
     // Double keying, prototype model is saving keys for screens and screens for prototypes that it belongs to 
     // but we may need it in some case
     // making life easier, optimize later
@@ -20,7 +20,7 @@ const ScreensModel = mongoose.Schema(
           color: { type: String }
         },
         link: {
-          type: Schema.Types._id
+          type: Schema.Types.ObjectId
         },
         text: {
           type: String
