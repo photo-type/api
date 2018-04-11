@@ -12,7 +12,7 @@ module.exports = (server, options, next) => {
           allow: 'multipart/form-data',
           maxBytes: 5000 * 5000 * 10,
         },
-        auth: 'jwt',
+         auth: 'jwt',
         handler: imageController.upload
       }
     }

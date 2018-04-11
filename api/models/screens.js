@@ -8,7 +8,7 @@ const ScreensModel = mongoose.Schema(
     // Double keying, prototype model is saving keys for screens and screens for prototypes that it belongs to 
     // but we may need it in some case
     // making life easier, optimize later
-    createdBy: { type: Schema.Types.ObjectId , ref:"prototype"},
+    protoype: { type: Schema.Types.ObjectId , ref:"prototype"},
     path: { type: String },
     actions: [
       {
