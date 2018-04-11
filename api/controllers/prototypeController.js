@@ -30,9 +30,9 @@ prototypeController.getPrototypes = function (req, res) {
   if (req.params.id) {
     query._id = req.params.id
   }
-  Prototype.find({
+  Prototype.find(
     query
-  }).then(prototypes => {
+  ).then(prototypes => {
     return res(prototypes)
   }).catch((err) => {
     console.log("err getProrotypes", err)
