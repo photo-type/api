@@ -22,7 +22,7 @@ prototypeController.createPrototype = function (req, res) {
 
 prototypeController.getPrototypes = function (req, res) {
   let query = {
-    user: req.payload.user_id
+    user: req.user
   }
   // if ther is an id in the request params then query for only
   // the specific prorotype

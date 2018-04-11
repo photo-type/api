@@ -18,8 +18,16 @@ module.exports = (server, options, next) => {
       }
     },
     {
-      method:"post",
+      method:"get",
       path:"/prototypes/{id}",
+      config:{
+        handler: prototypeController.getPrototypes,
+        auth: 'jwt'
+      }
+    },
+    {
+      method:"get",
+      path:"/prototypes",
       config:{
         handler: prototypeController.getPrototypes,
         auth: 'jwt'
