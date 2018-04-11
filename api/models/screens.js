@@ -20,7 +20,7 @@ const ScreensModel = mongoose.Schema(
           color: { type: String }
         },
         link: {
-          type: Schema.Types.ObjectId
+          type: Schema.Types.ObjectId , ref :"screens"
         },
         text: {
           type: String
