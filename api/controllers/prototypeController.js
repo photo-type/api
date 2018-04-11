@@ -8,7 +8,7 @@ const prototypeController = {};
 prototypeController.createPrototype = function (req, res) {
 
   let protoype = new Prototype({
-    name: req.payload.name || "prototype1"
+    name: req.payload.name
     // todo replace with something meaningful if user doesnt provide a name for prototype
   })
 
