@@ -1,6 +1,5 @@
 const imageController = require("../controllers/imageController");
 const Joi = require('joi');
-const fs = require('fs');
 module.exports = (server, options, next) => {
   server.route([
     {
@@ -13,7 +12,7 @@ module.exports = (server, options, next) => {
           allow: 'multipart/form-data',
           maxBytes: 5000 * 5000 * 10,
         },
-        auth: false,
+        auth: 'jwt',
         handler: imageController.upload
       }
     }

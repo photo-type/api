@@ -7,6 +7,18 @@ let s3service = require('../services/AmazonS3Service');
 
 const imageController = {};
 imageController.upload = (req, reply) => {
+  let username = req.payload.username;
+  let project = req.payload.project;
+  const image = req.payload.file;
+  const key = 'phototype/prototypes'+ uid() +'.png';
+
+  s3service.upload.promise().then((data)=>{
+
+  })
+
+
+
+
   let promise = new Promise((resolve, reject) => {
     let username = req.payload.username;
     let project = req.payload.project;
