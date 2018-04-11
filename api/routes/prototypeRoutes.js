@@ -13,7 +13,7 @@ module.exports = (server, options, next) => {
               name: Joi.string().required()
             }
           },
-        auth: false,
+        auth: 'jwt',
         handler: prototypeController.createPrototype
       }
     }
