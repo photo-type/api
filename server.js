@@ -16,9 +16,9 @@ if (!process.env.PRODUCTION) {
 }
 
 mongoose.Promise = require('bluebird');
-// mongoose.connect(dbConfig.connection_string, () => {
-//   console.log('Connected to MongoDB');
-// });
+mongoose.connect(dbConfig.connection_string, () => {
+  console.log('Connected to MongoDB');
+});
 
 Glue.compose(manifest, { relativeTo: __dirname }, (err, server) => {
   if (err) {
