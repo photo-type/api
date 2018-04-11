@@ -1,6 +1,5 @@
 const imageController = require("../controllers/imageController");
 const Joi = require('joi');
-const fs = require('fs');
 module.exports = (server, options, next) => {
   server.route([
     {
