@@ -11,7 +11,6 @@ prototypeController.createPrototype = function (req, res) {
     name: req.payload.name
     // todo replace with something meaningful if user doesnt provide a name for prototype
   })
-
   protoype.save().then(() => {
     return res({ success: true, prototypeId: protoype._id, message: "successfully created" })
   }).catch((err) => {

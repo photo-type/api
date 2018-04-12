@@ -4,44 +4,50 @@ let FS = require('fs');
 let path = require('path');
 let uid = require('uniqid');
 let s3service = require('../services/AmazonS3Service');
-
+let Screens = require('../models/screens');
+let Prototypes = require('../models/prototype');
 const imageController = {};
+
+
 imageController.upload = (req, reply) => {
-  let username = req.payload.username;
-  let project = req.payload.project;
+  let username = req.username;
+  let prototype = req.params.id;
   const image = req.payload.file;
-  const key = 'phototype/prototypes'+ uid() +'.png';
+  const key = 'phototype/prototypes' + uid() + '.png';
 
-  s3service.upload.promise().then((data)=>{
-
-  })
-
-
-
-
-  let promise = new Promise((resolve, reject) => {
-    let username = req.payload.username;
-    let project = req.payload.project;
-    const image = req.payload.file;
-    const key = 'phototype/prototypes'+ uid() +'.png';
-    s3service.upload(
-      image.path,
-      key,
-      image.bytes,
-      (err,data)=>{
-        console.log("err",err,data)
-        if(err){
-          err.success=false;
-          resolve(err)
-        }
-        else{
-          data.success=true
-          resolve(data)
-        }
+  s3service.upload(
+    image.path,
+    key,
+    image.bytes
+    , function (err, data) {
+      if (err) {
+        return reply({ success: false, message: err })
       }
-    )
+      let screen = new Screens({
+        prototype: prototype,
+        path: key
+      })
+      screen.save().then(() => {
+        Prototypes.findOne({
+          _id: prototype
+        }).then(
+          p => {
+            p.screens.push({ _id: screen._id })
+            p.save().then(() => {
+              return reply({ success: true, data: screen })
+
+            }).catch((err) => {
+              return reply(Boom.internal("there was an error updating the prototype", err))
+            })
+          }
+        ).catch((err) => {
+          return reply(Boom.internal("there was an error finding the prototype", err))
+
+        })
+      }).catch((err) => {
+        return reply(Boom.internal("there was an error saving the screen", err))
+      })
     })
-  return reply(promise);
 }
 
 module.exports = imageController;
