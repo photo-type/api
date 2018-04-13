@@ -10,10 +10,8 @@ prototypeController.createPrototype = function (req, res) {
   let protoype = new Prototype({
     name: req.payload.name,
     user : req.user
-    
-    // todo replace with something meaningful if user doesnt provide a name for prototype
-  })
 
+  })
   protoype.save().then(() => {
     return res({ success: true, prototypeId: protoype._id, message: "successfully created" })
   }).catch((err) => {
@@ -26,12 +24,10 @@ prototypeController.getPrototypes = function (req, res) {
   let query = {
     user: req.user
   }
-  // if ther is an id in the request params then query for only
-  // the specific prorotype
-  // otherwise get all of the user's prototypes
   if (req.params.id) {
     query._id = req.params.id
   }
+  console.log(query)
   Prototype.find(
     query
   ).then(prototypes => {

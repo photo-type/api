@@ -9,5 +9,7 @@ const PrototypeSchema = mongoose.Schema({
   screens:[{
     _id: {type: Schema.Types.ObjectId, default: [], ref:"screens"}
   }]
+},{
+  usePushEach: true
 })
 module.exports = mongoose.model("prototypes",PrototypeSchema)
