@@ -18,19 +18,34 @@ module.exports = (server, options, next) => {
       }
     },
     {
-      method:"get",
-      path:"/prototypes/{id}",
-      config:{
+      method: "get",
+      path: "/prototypes/{id}",
+      config: {
         handler: prototypeController.getPrototypes,
         auth: 'jwt'
       }
     },
     {
-      method:"get",
-      path:"/prototypes",
-      config:{
+      method: "get",
+      path: "/prototypes",
+      config: {
         handler: prototypeController.getPrototypes,
         auth: 'jwt'
+      }
+    }, {
+      method: 'patch',
+      path: '/screens/{id}',
+      config: {
+        handler: prototypeController.editScreen,
+        auth: 'jwt'
+      }
+    },
+    {
+      method :'GET',
+      path:'/prototypes/{id}/screens',
+      config:{
+        handler: prototypeController.getScreens,
+        auth:'jwt'
       }
     }
   ])

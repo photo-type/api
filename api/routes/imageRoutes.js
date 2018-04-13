@@ -4,7 +4,7 @@ module.exports = (server, options, next) => {
   server.route([
     {
       method: "post",
-      path: "/prototype/{id}/screens",
+      path: "/prototypes/{id}/screens",
       config: {
         payload: {
           output: 'file',
