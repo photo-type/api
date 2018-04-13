@@ -1,7 +1,7 @@
 
 let Prototype = require("../models/prototype");
 let Boom = require("boom");
-
+let Screens = require('../models/screens');
 const prototypeController = {};
 
 
@@ -16,6 +16,27 @@ prototypeController.createPrototype = function (req, res) {
   }).catch((err) => {
     console.log('logging error', err);
     return res(Boom.internal("Error creating new protoype"))
+  })
+}
+prototypeController.deletePrototype = function(req,res){
+  
+}
+prototypeController.getScreens = function(req,res){
+  Screens.find({
+    _prototype : req.params.id
+  }).then((screen)=>{
+    return res({screen:screen})
+  }).catch((err)=>{
+    return res(Boom.internal("something went wrong getting screens"));
+  })
+}
+prototypeController.editScreen = function (req,res){
+  Screens.find({
+    _id : req.params.id
+  }).then((screen)=>{
+    return res({screen:screen})
+  }).catch((err)=>{
+    return res(Boom.internal("something went wrong getting screens"));
   })
 }
 

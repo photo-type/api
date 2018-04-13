@@ -24,7 +24,7 @@ imageController.upload = (req, reply) => {
         return reply({ success: false, message: err })
       }
       let screen = new Screens({
-        prototype: prototype,
+        _prototype: prototype,
         path: key
       })
       screen.save().then(() => {
