@@ -10,6 +10,7 @@ prototypeController.createPrototype = function (req, res) {
   let protoype = new Prototype({
     name: req.payload.name,
     user : req.user
+
   })
   protoype.save().then(() => {
     return res({ success: true, prototypeId: protoype._id, message: "successfully created" })
