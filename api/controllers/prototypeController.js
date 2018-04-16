@@ -32,11 +32,18 @@ prototypeController.getScreens = function(req,res){
   })
 }
 prototypeController.editScreen = function (req,res){
-  Screens.find({
+  let data = req.payload
+  Screens.findOne({
     _id : req.params.id
-  }).then((screen)=>{
-    return res({screen:screen})
+  }).then(s=>{
+      s.actions.push(data.actions)
+      s.save().then((data)=>{
+        return res(data)
+      }).catch(err=>{
+        return res(Boom.internal("Something went wrong patching screens", err))
+      })
   }).catch((err)=>{
+    console.log(err);
     return res(Boom.internal("something went wrong getting screens"));
   })
 }
