@@ -48,10 +48,10 @@ prototypeController.getPrototypes = function (req, res) {
   if (req.params.id) {
     query._id = req.params.id
   }
-  console.log(query)
+
   Prototype.find(
     query
-  ).then(prototypes => {
+  ).populate('screens').then(prototypes => {
     return res(prototypes)
   }).catch((err) => {
     console.log("err getProrotypes", err)

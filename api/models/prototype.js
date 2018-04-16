@@ -6,9 +6,9 @@ const PrototypeSchema = mongoose.Schema({
   user : {type: Schema.Types.ObjectId , ref :"users"},
   name: { type: String },
   created_at: { type: Date, default: Date.now },
-  screens:[{
-    _id: {type: Schema.Types.ObjectId, default: [], ref:"screens"}
-  }]
+  screens:[
+    {type: Schema.Types.ObjectId, default: [], ref:"screens"}
+  ]
 },{
   usePushEach: true
 })
