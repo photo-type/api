@@ -33,7 +33,7 @@ module.exports = (server, options, next) => {
         auth: 'jwt'
       }
     }, {
-      method: 'patch',
+      method: 'POST',
       path: '/screens/{id}',
       config: {
         handler: prototypeController.editScreen,

@@ -12,8 +12,8 @@ const ScreensModel = mongoose.Schema(
     path: { type: String },
     actions: [
       {
-        _id : {type :Schema.Types.ObjectId, auto:true},
-        description :{type :String },
+        description: { type: String },
+        _id: { type: Schema.Types.ObjectId, auto: true },
         dimensions: {
           x: { type: Number },
           y: { type: Number },

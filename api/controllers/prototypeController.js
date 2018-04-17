@@ -9,7 +9,7 @@ prototypeController.createPrototype = function (req, res) {
 
   let protoype = new Prototype({
     name: req.payload.name,
-    user : req.user
+    user: req.user
 
   })
   protoype.save().then(() => {
@@ -19,30 +19,36 @@ prototypeController.createPrototype = function (req, res) {
     return res(Boom.internal("Error creating new protoype"))
   })
 }
-prototypeController.deletePrototype = function(req,res){
-  
+prototypeController.deletePrototype = function (req, res) {
+
 }
-prototypeController.getScreens = function(req,res){
+prototypeController.getScreens = function (req, res) {
   Screens.find({
-    _prototype : req.params.id
-  }).then((screen)=>{
-    return res({screen:screen})
-  }).catch((err)=>{
+    _prototype: req.params.id
+  }).then((screen) => {
+    return res({ screen: screen })
+  }).catch((err) => {
     return res(Boom.internal("something went wrong getting screens"));
   })
 }
-prototypeController.editScreen = function (req,res){
+prototypeController.editScreen = function (req, res) {
+  // let data = JSON.parse(req.payload)
   let data = req.payload
+  
+  // return res(JSON.parse(data));
   Screens.findOne({
-    _id : req.params.id
-  }).then(s=>{
-      s.actions.push(data.actions)
-      s.save().then((data)=>{
-        return res(data)
-      }).catch(err=>{
-        return res(Boom.internal("Something went wrong patching screens", err))
-      })
-  }).catch((err)=>{
+    _id: req.params.id
+  }).then(s => {
+    data.actions.forEach(act => {
+      if(!s.actions.includes(act))
+        s.actions.push(act)
+    })
+    s.save().then((data) => {
+      return res(data)
+    }).catch(err => {
+      return res(Boom.internal("Something went wrong patching screens", err))
+    })
+  }).catch((err) => {
     console.log(err);
     return res(Boom.internal("something went wrong getting screens"));
   })
