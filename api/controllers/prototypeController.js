@@ -32,17 +32,13 @@ prototypeController.getScreens = function (req, res) {
   })
 }
 prototypeController.editScreen = function (req, res) {
-  // let data = JSON.parse(req.payload)
   let data = req.payload
   
-  // return res(JSON.parse(data));
   Screens.findOne({
     _id: req.params.id
   }).then(s => {
-    data.actions.forEach(act => {
-      if(!s.actions.includes(act))
-        s.actions.push(act)
-    })
+    s.actions = data.actions;
+    s.markModified('actions');
     s.save().then((data) => {
       return res(data)
     }).catch(err => {
