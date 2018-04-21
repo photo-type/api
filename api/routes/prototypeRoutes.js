@@ -50,6 +50,7 @@ module.exports = (server, options, next) => {
                 width: Joi.number().required(),
                 color: Joi.string()
               }).required(),
+              link: Joi.string(),
               text: Joi.string(),
               type: Joi.string()
             }))
