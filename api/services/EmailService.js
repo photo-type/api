@@ -22,7 +22,7 @@ module.exports.sendMail = function (email, name, token) {
         html = html.replace('##TOKEN##', token);
 
         const mailOptions = {
-          from: 'Phototype',
+          from: 'Phototype <notification@phototype.me>',
           to: email,
           subject: 'Thankyou for Signing up on Phototype',
           html: html
