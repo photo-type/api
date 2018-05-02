@@ -1,7 +1,9 @@
 'use strict';
 const Users = require('../models/Users');
+const uuid = require('node-uuid');
 const JWT = require('jsonwebtoken');
 const jwtConfig = require('../../config/jwt.js');
+const emailService = require('../services/EmailService');
 const Boom = require('boom');
 var bcrypt = require('bcrypt');
 const controller = {};
@@ -15,20 +17,27 @@ controller.signup = function (request, reply) {
     if (User) {
       return reply({error: true, message: 'User already exists'});
     }
+    const token = uuid.v1();
     const user = new Users({
       email: email,
       password: password,
       name: name,
+      email_confirm_token: token
     });
 
     user.save().then(() => {
-      return reply({success: true, message: 'Signup succuess'});
+      emailService.sendMail(email, name, token).catch((err) => {
+        console.log(err, 'Error sending email'); // fail silenlty
+      })
+      return reply({success: true, message: 'Signup success, an email was sent to your email.'});
     })
     .catch((err) => {
+      console.log(err); // fail silenlty
       return reply(Boom.internal('Mongo write error'));
     });
   })
   .catch((err) => {
+    console.log(err); // fail silenlty
     return reply(Boom.internal('mongo read error'));
   });
 };
@@ -36,9 +45,11 @@ controller.signup = function (request, reply) {
 controller.login = function (request, reply) {
   const email = request.payload.email;
   const password = request.payload.password;
-  const type = request.payload.type;
   Users
-    .findOne({email:email})
+    .findOne({
+      email_verified: true,
+      email: email
+    })
     .exec()
     .then((User) => {
       if (!User) {
@@ -70,6 +81,34 @@ controller.login = function (request, reply) {
       .catch((err) => {
         return reply(Boom.internal(err));
       });
+    });
+};
+
+controller.confirmEmail = function (request, reply) {
+  const token = request.query.token;
+  const email = request.query.email;
+  Users
+    .findOne({
+      email_verified: false,
+      email: email,
+      email_confirm_token: token
+    })
+    .exec()
+    .then((User) => {
+      if (!User) {
+        return reply('The User was not found in our DB.');
+      }
+
+      User.email_verified = true;
+      User.save().then(() => {
+        return reply('Thank you for verifying your email, You can now login to the app.');
+      })
+      .catch((err) => {
+        return reply('There was an error while writing to the DB.');
+      });
+    })
+    .catch((err) => {
+      return reply('There was an error while reading from the DB.');
     });
 };
 

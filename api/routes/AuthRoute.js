@@ -24,6 +24,23 @@ module.exports = function (server, options, next) {
       }
     },
     {
+      method: 'GET',
+      path: '/auth/confirm_email',
+      config: {
+        auth: false,
+        handler: AuthController.confirmEmail,
+        validate: {
+          query: {
+            email: Joi.string().email().required(),
+            token: Joi.string().required()
+          }
+        },
+        tags: ['api', 'auth'],
+        description: 'Confirms email of customers',
+        notes: 'Confirms email of customers'
+      }
+    },
+    {
       method: 'POST',
       path: '/auth/login',
       config: {
