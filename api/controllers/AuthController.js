@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt');
 const controller = {};
 
 controller.signup = function (request, reply) {
-  const email = request.payload.email;
+  const email = request.payload.email.toLowerCase();
   const password = request.payload.password;
   const name = request.payload.name;
 
@@ -43,7 +43,7 @@ controller.signup = function (request, reply) {
 };
 
 controller.login = function (request, reply) {
-  const email = request.payload.email;
+  const email = request.payload.email.toLowerCase();
   const password = request.payload.password;
   Users
     .findOne({
