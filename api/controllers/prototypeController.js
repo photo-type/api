@@ -20,7 +20,15 @@ prototypeController.createPrototype = function (req, res) {
   })
 }
 prototypeController.deletePrototype = function (req, res) {
-
+  Screens.find({
+    _prototype: req.params.id
+  }).remove(()=>{
+    Prototype.find({
+      _id:req.params.id
+    }).remove(()=>{
+      return res({success:true, message:'succesfully deleted'})
+    }).catch(e => {return res(Boom.internal("error deleting prototype"))})
+  }).catch(e => {return res(Boom.internal("error deleting screen of prototype"))})
 }
 prototypeController.getScreens = function (req, res) {
   Screens.find({

@@ -26,6 +26,14 @@ module.exports = (server, options, next) => {
       }
     },
     {
+      method: "delete",
+      path: "/prototypes/{id}",
+      config: {
+        handler: prototypeController.deletePrototype,
+        auth: 'jwt'
+      }
+    },
+    {
       method: "get",
       path: "/prototypes",
       config: {
