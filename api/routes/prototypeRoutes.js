@@ -41,11 +41,28 @@ module.exports = (server, options, next) => {
         auth: 'jwt'
       }
     }, {
-      method: 'POST',
+      method: 'PUT',
       path: '/screens/{id}',
       config: {
         handler: prototypeController.editScreen,
-        auth: 'jwt'
+        auth: 'jwt',
+        validate: {
+          payload: {
+            actions: Joi.array().items(Joi.object({
+              description: Joi.string(),
+              _id: Joi.string(),
+              dimensions: Joi.object({
+                x: Joi.number().required(),
+                y: Joi.number().required(),
+                height: Joi.number().required(),
+                width: Joi.number().required(),
+                color: Joi.string()
+              }).required(),
+              text: Joi.string(),
+              type: Joi.string()
+            }))
+          }
+        }
       }
     },
     {
