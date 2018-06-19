@@ -63,9 +63,9 @@ const manifest = {
         }
       }
     },
-    // {
-    //   plugin: './home'
-    // },
+    {
+      plugin: './home'
+    },
     {
       plugin: {
         register: 'good',

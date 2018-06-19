@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt');
 var UsersSchema = mongoose.Schema({
   email: {type: String, unique: true},
   name: {type: String, required: true},
+  password_reset_token: {type: String, default: ''},
   email_confirm_token: {type: String, default: ''},
   password: {type: String},
   email_verified: {type: Boolean, default: false},

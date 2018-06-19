@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 module.exports.sendMail = function (email, name, token) {
   return new Promise(function(resolve, reject) {
-    fs.readFile(path.resolve('./templates/signup.html'), "utf-8", (err, data) => {
+    fs.readFile(path.resolve(`./templates/${name == 'User' ? 'reset' : 'signup'}.html`), "utf-8", (err, data) => {
       if (err) {
         reject(err);
       } else {
@@ -24,7 +24,7 @@ module.exports.sendMail = function (email, name, token) {
         const mailOptions = {
           from: 'Phototype <notification@phototype.me>',
           to: email,
-          subject: 'Thankyou for Signing up on Phototype',
+          subject: name == 'User' ? 'Reset your Password | Phototype' : 'Thankyou for Signing Up | Phototype',
           html: html
         };
         transporter.sendMail(mailOptions, function(error, info){

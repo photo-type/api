@@ -112,6 +112,66 @@ controller.confirmEmail = function (request, reply) {
     });
 };
 
+controller.sendEmail = function (request, reply) {
+  Users
+    .findOne({email: request.payload.email})
+    .then((user) => {
+      if (!user) {
+        return reply({error: true, message: 'User not found'});
+      }
+      const token = uuid.v1();
+      emailService.sendMail(request.payload.email, 'User', token).then((res) => {
+        Users.update({
+          _id: user._id
+        }, {password_reset_token: token})
+        .then(() => {
+          reply({
+            success: true, message: 'An email was sent to your email address, Check the instructions to reset your password!'
+          });
+        })
+        .catch(() => reply(Boom.internal('Mongo read error')));
+      })
+      .catch((error) => {
+        reply(Boom.internal('Mongo read error'));
+      });
+    })
+    .catch((error) => {
+      reply(Boom.internal('Mongo read error'));
+    });
+  
+}
+
+controller.resetPassword = function (request, reply) {
+  Users
+    .findOne({
+      email: request.payload.email,
+      password_reset_token: request.payload.token
+    })
+    .then((User) =>{
+      if (!User) {
+        return reply({error: true, message: 'No User found with this email'});
+      }
+      hashPassword(request.payload.password).then((hashPassword) => {
+        const doc = {
+          password: hashPassword,
+          password_reset_token: ''
+        };
+        Users
+          .update({_id: User._id}, doc, (err, res) => {
+            if (err) {
+              return reply(Boom.internal("DB write error"));
+            }
+            reply({success: true, message: 'Password updated successfully'});
+          });
+      }).catch((err) => {
+        return reply(Boom.internal("DB read error"));
+      });
+    })
+    .catch((err) => {
+      return reply(Boom.internal("DB read error"));
+    });
+}
+
 
 function hashPassword(password) {
   const promise = new Promise((resolve, reject) => {

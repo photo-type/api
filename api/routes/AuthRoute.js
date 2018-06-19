@@ -57,22 +57,39 @@ module.exports = function (server, options, next) {
         notes: 'Signs in customers'
       }
     },
-    // {
-    //   method: 'PUT',
-    //   path: '/auth/reset_password',
-    //   config: {
-    //     handler: AuthController.resetPassword,
-    //     validate: {
-    //       payload: {
-    //         code: Joi.string().required(),
-    //         phone_number: Joi.string().required(),
-    //         password: Joi.string().required()
-    //       }
-    //     },
-    //     tags: ['api', 'auth'],
-    //     description: 'Reset user password if code provided is valid',
-    //     notes: 'Reset user password if code provided is valid'
-    //   }
-    // }
+    {
+      method: 'POST',
+      path: '/auth/send_reset_email',
+      config: {
+        auth: false,
+        handler: AuthController.sendEmail,
+        validate: {
+          payload: {
+            email: Joi.string().email().required(),
+          }
+        },
+        tags: ['api', 'auth'],
+        description: 'Reset user password by sending email',
+        notes: 'Reset user password by sending email'
+      }
+    },
+    {
+      method: 'PUT',
+      path: '/auth/reset_password',
+      config: {
+        auth: false,
+        handler: AuthController.resetPassword,
+        validate: {
+          payload: {
+            token: Joi.string().required(),
+            email: Joi.string().email().required(),
+            password: Joi.string().required()
+          }
+        },
+        tags: ['api', 'auth'],
+        description: 'Reset user password if token provided is valid',
+        notes: 'Reset user password if token provided is valid'
+      }
+    }
   ]);
 };

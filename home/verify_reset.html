@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)http://kant.thememountain.com/html/index-app.html -->
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="twitter:widgets:theme" content="light">
+  <meta property="og:title" content="Your-Title-Here">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="Your-Image-Url">
+	<meta property="og:description" content="Your-Page-Description">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>PhotoType: Prototyping made easy!</title>
+
+  <!-- Font -->
+  
+
+  <!-- Css -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <!--[if lt IE 9]>
+    	<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  <style>
+    .fluidvids {
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+    }
+
+    .fluidvids-item {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body class="shop home-page transition-support webkit" >
+
+  <!-- Side Navigation Menu -->
+
+	<div class="wrapper container-fluid">
+		<div class="wrapper-inner">
+
+			<!-- Header -->
+			<!-- Header End -->
+
+			<!-- Content -->
+			<div class="content clearfix" style="margin-top: 3rem">
+
+				<!-- Hero Section 5 -->
+				<section  id="strategy" ng-app="resetPasswordApp" class="col-12">
+					<div >
+						<div class="row" ng-controller="ResetPasswordController">
+								               
+								<div class="col-12">
+									<div ng-show="passwordReset" class="ng-hide column width-12 center">
+											<h2>You are all set up. Password Reset!</h2>
+											<h5>You can now login to the Phototype app</h5>
+										</div> 
+									<div ng-hide="passwordReset"  class="" >
+										<div class="hero-content-inner left">
+											<h3>Confirm Reset password</h3>
+											<div class="row" style="margin-top: 1rem;" >
+												<div class="column width-12">
+													<div class="login-form-container">
+														<form class="login-form" name="verifyForm" novalidate>
+															<div class="row">
+																<div class="col-12">
+																	<div class="form-group">
+																		<label class="color-charcoal">Email:</label>
+																		<input type="email" disabled ng-model="reset.email" name="email" class="form-username form-control rounded large"  tabindex="1" required>
+																	</div>
+																</div>
+																
+																<div class="col-12">
+																		<div class="form-group">
+																			<label class="color-charcoal">Verification Code:</label>
+																			<input type="text" disabled  ng-model="reset.token" name="code" class="form-username form-control rounded large"  tabindex="1" required>
+																	</div>
+																</div>
+																<div class="col-12">
+																		<div class="form-group">
+																			<label class="color-charcoal">New Password:</label>
+																			<input type="password" ng-model="reset.password" name="password" class="form-password form-control rounded large" tabindex="2" required>
+																			<p class="ng-hide" ng-show="verifyForm.password.$invalid && verifyForm.password.$touched" style="color: red;">Password is required.</p>
+																		</div>
+																	</div>
+																<div class="col-12">
+																	<button style="background-color: #3fb58b !important; color: white !important; width: 100%" ng-disabled="loading || verifyForm.$invalid" ng-class="(loading || verifyForm.$invalid) ? 'disabled' : ''" ng-click="resetPassword()" type="button" class="form-submit button btn btn-block rounded large bkg-green bkg-hover-theme color-white color-hover-white">
+																		<span ng-hide="loading">RESET PASSWORD</span>
+																		<span ng-show="loading">PROCESSING</span>
+																	</button>
+																</div>
+															</div>
+															<p class="ng-hide mt-20" ng-show="error" style="padding: 15px; border: 1px solid red;border-radius: 5px;margin-top: 10px;color: red;">{{message}}</p>
+														</form>
+														<div class="form-response show"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+          </div>
+				</section>
+				<!-- Hero Section 5 End -->
+
+			</div>
+			<!-- Content End -->
+
+			<!-- Footer -->
+			<footer class="footer" style="position: absolute;bottom: 0;left:0;right:0">
+				
+				<div class="footer-bottom">
+					<div class="row">
+						<div class="col-12 text-center">
+							<div class="footer-bottom-inner">
+								<p class="copyright center clear-float-on-mobile">&copy; PhotoType. All Rights Reserved. </p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- Footer End -->
+
+		</div>
+	</div>
+  
+
+  <!-- Js -->
+	<script>
+		(function () {
+
+var signupApp = angular.module('resetPasswordApp', []);
+
+signupApp.controller('ResetPasswordController', function ResetPasswordController($scope, $http) {
+	$scope.loading = false;
+	$scope.error = false;
+	$scope.passwordReset = false;
+	$scope.message = '';
+	var query= location.search.replace('?', '').split('&');
+
+	$scope.reset = {
+		email: query[0].split('=')[1],
+		token: query[1].split('=')[1],
+		password: ''
+	};
+
+	$scope.obj = {
+		email: '',
+	};
+	console.log($scope.reset);
+	$scope.resetPassword = function () {
+		$scope.loading = true;
+		$scope.error = false;
+		$http.put('/api/auth/reset_password', $scope.reset).success(function (data) {
+			$scope.loading = false;
+			if (data.error) {
+				$scope.error = true;
+				$scope.message = data.message;
+				return;
+			}
+			$scope.passwordReset = true;
+		})
+		.error(function (err) {
+			console.log(err);
+			$scope.error = true;
+			$scope.message = err.message;
+			$scope.loading = false;
+		});
+	}
+
+	$scope.sendResetEmail = function () {
+		$scope.loading = true;
+		$scope.error = false;
+		$http.post('/api/auth/send_reset_email', $scope.obj).success(function (data) {
+			$scope.loading = false;
+			if (data.error) {
+				$scope.error = true;
+				$scope.message = data.message;
+				return;
+			}
+			$scope.passwordReset = true;
+		})
+		.error(function (err) {
+			console.log(err);
+			$scope.error = true;
+			$scope.message = err.message;
+			$scope.loading = false;
+		});
+	};
+});
+
+})();
+	</script>
+  
+</body>
+
+</html>
